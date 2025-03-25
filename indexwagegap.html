@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wage Gap Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #333;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .calculate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .calculate-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .results-container {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            display: none;
+            background-color: #f8f9fa;
+        }
+
+        .results-container.show {
+            display: block;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .wage-gap-main {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .wage-gap-statement {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .wage-difference-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .wage-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .wage-box .amount {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+            color: #dc3545;
+        }
+
+        .wage-box .period {
+            display: block;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .equivalency-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .equiv-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .equiv-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .equiv-label {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-container {
+                margin: 20px;
+                padding: 20px;
+            }
+            .wage-difference-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .equivalency-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .tab-button.active {
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+            font-weight: bold;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .tab-navigation {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .tab-button {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Wage Gap Calculator</h1>
+        <p>Want to look up the gender wage gap in your occupation? Fill out the calculator below:</p>
+        
+        <form id="wageGapForm">
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <select id="age" name="age" required>
+                    <option value="">Select Age</option>
+                    <!-- Age options will be generated by JavaScript -->
+                </select>
+                <div class="error-message" id="ageError">Please select your age</div>
+            </div>
+
+            <div class="form-group">
+                <label for="occupation">Occupation:</label>
+                <select id="occupation" name="occupation" required>
+                    <option value="">Select Occupation</option>
+                    <!-- Options will be populated from data.json -->
+                </select>
+                <div class="error-message" id="occupationError">Please select an occupation</div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Calculate Wage Gap</button>
+        </form>
+
+        <div id="results" class="results-container">
+            <h2>THE WAGE GAP</h2>
+            
+            <!-- Add Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active" data-tab="earning_female">All Women</button>
+                <button class="tab-button" data-tab="earning_afro">African American</button>
+                <button class="tab-button" data-tab="earning_asian">Asian American</button>
+                <button class="tab-button" data-tab="earning_hispanic">Hispanic</button>
+                <button class="tab-button" data-tab="earning_nonhispanic">White</button>
+            </div>
+
+            <!-- Add Tab Content -->
+            <div class="tab-content">
+                <div id="earning_female" class="tab-pane active">
+                    <div class="wage-gap-main">
+                        <p class="wage-gap-statement"><strong>A woman working in <span id="earning_female-occupation">this occupation</span> makes <span id="earning_female-cents-amount">80</span> cents to a man's $1.</strong></p>
+                        
+                        <div class="wage-difference-grid">
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_female-weekly-loss">230</span></span>
+                                <span class="period">per week</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_female-yearly-loss">12,000</span></span>
+                                <span class="period">per year</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_female-lifetime-loss">562,000</span></span>
+                                <div class="period">in <span id="earning_female-age-gap">47</span> years</div>
+                            </div>
+                        </div>
+
+                        <h3>That's like...</h3>
+                        <div class="equivalency-grid">
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_female-coffee-amount">297,418</span>
+                                <span class="equiv-label">cups of coffee</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_female-childcare-amount">7,054</span>
+                                <span class="equiv-label">days of childcare</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_female-rent-amount">304</span>
+                                <span class="equiv-label">months of rent</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_female-loan-amount">1,430</span>
+                                <span class="equiv-label">months of student loan payment</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_female-baseball-amount">9,867</span>
+                                <span class="equiv-label">tickets to a Boston baseball game</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repeat the same structure for other demographics with updated IDs -->
+                <div id="earning_afro" class="tab-pane">
+                    <!-- Same structure as above with 'african-' prefix for IDs -->
+                    <div class="wage-gap-main">
+                        <p class="wage-gap-statement"><strong>A woman working in <span id="earning_afro-occupation">this occupation</span> makes <span id="earning_afro-cents-amount">80</span> cents to a man's $1.</strong></p>
+                        
+                        <div class="wage-difference-grid">
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_afro-weekly-loss">230</span></span>
+                                <span class="period">per week</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_afro-yearly-loss">12,000</span></span>
+                                <span class="period">per year</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_afro-lifetime-loss">562,000</span></span>
+                                <div class="period">in <span id="earning_afro-age-gap">47</span> years</div>
+                            </div>
+                        </div>
+
+                        <h3>That's like...</h3>
+                        <div class="equivalency-grid">
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_afro-coffee-amount">297,418</span>
+                                <span class="equiv-label">cups of coffee</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_afro-childcare-amount">7,054</span>
+                                <span class="equiv-label">days of childcare</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_afro-rent-amount">304</span>
+                                <span class="equiv-label">months of rent</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_afro-loan-amount">1,430</span>
+                                <span class="equiv-label">months of student loan payment</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_afro-baseball-amount">9,867</span>
+                                <span class="equiv-label">tickets to a Boston baseball game</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="earning_asian" class="tab-pane">
+                    <!-- Same structure as above with 'asian-' prefix for IDs -->
+                    <div class="wage-gap-main">
+                        <p class="wage-gap-statement"><strong>A woman working in <span id="earning_asian-occupation">this occupation</span> makes <span id="earning_asian-cents-amount">80</span> cents to a man's $1.</strong></p>
+                        
+                        <div class="wage-difference-grid">
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_asian-weekly-loss">230</span></span>
+                                <span class="period">per week</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_asian-yearly-loss">12,000</span></span>
+                                <span class="period">per year</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_asian-lifetime-loss">562,000</span></span>
+                                <div class="period">in <span id="earning_asian-age-gap">47</span> years</div>
+                            </div>
+                        </div>
+
+                        <h3>That's like...</h3>
+                        <div class="equivalency-grid">
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_asian-coffee-amount">297,418</span>
+                                <span class="equiv-label">cups of coffee</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_asian-childcare-amount">7,054</span>
+                                <span class="equiv-label">days of childcare</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_asian-rent-amount">304</span>
+                                <span class="equiv-label">months of rent</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_asian-loan-amount">1,430</span>
+                                <span class="equiv-label">months of student loan payment</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_asian-baseball-amount">9,867</span>
+                                <span class="equiv-label">tickets to a Boston baseball game</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="earning_hispanic" class="tab-pane">
+                    <!-- Same structure as above with 'hispanic-' prefix for IDs -->
+                    <div class="wage-gap-main">
+                        <p class="wage-gap-statement"><strong>A woman working in <span id="earning_hispanic-occupation">this occupation</span> makes <span id="earning_hispanic-cents-amount">80</span> cents to a man's $1.</strong></p>
+                        
+                        <div class="wage-difference-grid">
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_hispanic-weekly-loss">230</span></span>
+                                <span class="period">per week</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_hispanic-yearly-loss">12,000</span></span>
+                                <span class="period">per year</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_hispanic-lifetime-loss">562,000</span></span>
+                                <div class="period">in <span id="earning_hispanic-age-gap">47</span> years</div>
+                            </div>
+                        </div>
+
+                        <h3>That's like...</h3>
+                        <div class="equivalency-grid">
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_hispanic-coffee-amount">297,418</span>
+                                <span class="equiv-label">cups of coffee</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_hispanic-childcare-amount">7,054</span>
+                                <span class="equiv-label">days of childcare</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_hispanic-rent-amount">304</span>
+                                <span class="equiv-label">months of rent</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_hispanic-loan-amount">1,430</span>
+                                <span class="equiv-label">months of student loan payment</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_hispanic-baseball-amount">9,867</span>
+                                <span class="equiv-label">tickets to a Boston baseball game</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="earning_nonhispanic" class="tab-pane">
+                    <!-- Same structure as above with 'white-' prefix for IDs -->
+                    <div class="wage-gap-main">
+                        <p class="wage-gap-statement"><strong>A woman working in <span id="earning_nonhispanic-occupation">this occupation</span> makes <span id="earning_nonhispanic-cents-amount">80</span> cents to a man's $1.</strong></p>
+                        
+                        <div class="wage-difference-grid">
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_nonhispanic-weekly-loss">230</span></span>
+                                <span class="period">per week</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_nonhispanic-yearly-loss">12,000</span></span>
+                                <span class="period">per year</span>
+                            </div>
+                            <div class="wage-box">
+                                <span class="amount">$<span id="earning_nonhispanic-lifetime-loss">562,000</span></span>
+                                <div class="period">in <span id="earning_nonhispanic-age-gap">47</span> years</div>
+                            </div>
+                        </div>
+
+                        <h3>That's like...</h3>
+                        <div class="equivalency-grid">
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_nonhispanic-coffee-amount">297,418</span>
+                                <span class="equiv-label">cups of coffee</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_nonhispanic-childcare-amount">7,054</span>
+                                <span class="equiv-label">days of childcare</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_nonhispanic-rent-amount">304</span>
+                                <span class="equiv-label">months of rent</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_nonhispanic-loan-amount">1,430</span>
+                                <span class="equiv-label">months of student loan payment</span>
+                            </div>
+                            <div class="equiv-item">
+                                <span class="equiv-number" id="earning_nonhispanic-baseball-amount">9,867</span>
+                                <span class="equiv-label">tickets to a Boston baseball game</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate age options
+        const ageSelect = document.getElementById('age');
+        for(let i = 18; i <= 64; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            ageSelect.appendChild(option);
+        }
+
+        // Update the data fetching and occupation population logic
+        let wageGapData;
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                wageGapData = data;
+                console.log('Data loaded:', data);
+                populateOccupations(data);
+            })
+            .catch(error => {
+                console.error('Error loading wage gap data:', error);
+            });
+
+        function populateOccupations(categories) {
+            const occupationSelect = document.getElementById('occupation');
+            
+            // Clear existing options except the first one
+            occupationSelect.innerHTML = '<option value="">Select Occupation</option>';
+            console.log('Categories:', categories);
+
+            // Add options from categories
+            index = 0;
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = category.categories;
+                occupationSelect.appendChild(option);
+                index = index + 1;
+            });
+        }
+
+        // Add these constants to your JavaScript
+        const COSTS = {
+            coffee: 1.89,
+            childcare: 79.69,
+            rent: 1847.00,
+            studentLoan: 393.00,
+            baseballTicket: 56.97
+        };
+
+        // Update your calculateWageGap function to handle different demographics
+        function calculateWageGap(age, occupation, demographic = 'all-women') {
+            // This is where you'd implement the actual wage gap calculation
+            // You'll need to add logic to handle different demographics
+
+            const earningFemale = wageGapData[occupation][demographic];
+            const earningMale = wageGapData[occupation]['earning_male'];
+            const earning_gap_per_week = earningMale - earningFemale;
+            const wageGap = earningFemale / earningMale;
+            const ageGap = 65 - age;
+            const totalEarningGap = earning_gap_per_week * 52 * ageGap;
+            const earning_gap_per_year = earning_gap_per_week * 52;
+            const total_earning_gap = totalEarningGap;
+
+            // Calculate equivalencies
+            const equivalencies = {
+                coffee: Math.floor(total_earning_gap / COSTS.coffee),
+                childcare: Math.floor(total_earning_gap / COSTS.childcare),
+                rent: Math.floor(total_earning_gap / COSTS.rent),
+                studentLoan: Math.floor(total_earning_gap / COSTS.studentLoan),
+                baseball: Math.floor(total_earning_gap / COSTS.baseballTicket)
+            };
+
+            return {
+                wageGap,
+                earning_gap_per_week,
+                earning_gap_per_year,
+                total_earning_gap,
+                ageGap,
+                equivalencies
+            };
+        }
+
+        // Update your form submission handler to calculate for all demographics
+        document.getElementById('wageGapForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const age = document.getElementById('age').value;
+            const occupation = document.getElementById('occupation').value;
+            
+            // Reset error messages
+            document.getElementById('ageError').style.display = 'none';
+            document.getElementById('occupationError').style.display = 'none';
+            
+            // Validate form
+            let isValid = true;
+            if (!age) {
+                document.getElementById('ageError').style.display = 'block';
+                isValid = false;
+            }
+            if (!occupation) {
+                document.getElementById('occupationError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+
+            // Calculate and update results for each demographic
+            ['earning_female', 'earning_afro', 'earning_asian', 'earning_hispanic', 'earning_nonhispanic'].forEach(demographic => {
+                const results = calculateWageGap(age, occupation, demographic);
+                console.log(results);
+                updateResults(results, demographic);
+            });
+
+            document.getElementById('results').classList.add('show');
+        });
+
+        function updateResults(results, demographic) {
+            // Update the results for a specific demographic tab
+            const tab = document.getElementById(demographic);
+            if (tab) {
+                // Update with correct ID selectors
+                const prefix = demographic + '-';
+                
+                // Update cents amount
+                const centsElement = tab.querySelector(`#${prefix}cents-amount`);
+                if (centsElement) centsElement.textContent = (results.wageGap * 100).toFixed(0);
+                
+                // Update wage differences
+                const weeklyElement = tab.querySelector(`#${prefix}weekly-loss`);
+                if (weeklyElement) weeklyElement.textContent = results.earning_gap_per_week.toLocaleString();
+                
+                const yearlyElement = tab.querySelector(`#${prefix}yearly-loss`);
+                if (yearlyElement) yearlyElement.textContent = results.earning_gap_per_year.toLocaleString();
+                
+                const lifetimeElement = tab.querySelector(`#${prefix}lifetime-loss`);
+                if (lifetimeElement) lifetimeElement.textContent = results.total_earning_gap.toLocaleString();
+
+                const ageGapElement = tab.querySelector(`#${prefix}age-gap`);
+                if (ageGapElement) ageGapElement.textContent = results.ageGap.toLocaleString();
+
+                // Update equivalencies
+                const coffeeElement = tab.querySelector(`#${prefix}coffee-amount`);
+                if (coffeeElement) coffeeElement.textContent = results.equivalencies.coffee.toLocaleString();
+                
+                const childcareElement = tab.querySelector(`#${prefix}childcare-amount`);
+                if (childcareElement) childcareElement.textContent = results.equivalencies.childcare.toLocaleString();
+                
+                const rentElement = tab.querySelector(`#${prefix}rent-amount`);
+                if (rentElement) rentElement.textContent = results.equivalencies.rent.toLocaleString();
+                
+                const loanElement = tab.querySelector(`#${prefix}loan-amount`);
+                if (loanElement) loanElement.textContent = results.equivalencies.studentLoan.toLocaleString();
+                
+                const baseballElement = tab.querySelector(`#${prefix}baseball-amount`);
+                if (baseballElement) baseballElement.textContent = results.equivalencies.baseball.toLocaleString();
+            }
+        }
+
+        // Add this to your existing JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and panes
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding pane
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+
+[
+  {
+    "id": 1,
+    "categories": "All occupations (16 years and over)",
+    "earning_male": 1147,
+    "earning_female": 917,
+    "earning_nonhispanic": 899,
+    "earning_afro": 704,
+    "earning_asian": 1025,
+    "earning_hispanic": 642
+  },
+  {
+    "id": 2,
+    "categories": "Management occupations",
+    "earning_male": 1742,
+    "earning_female": 1478,
+    "earning_nonhispanic": 1335,
+    "earning_afro": 1147,
+    "earning_asian": 1538,
+    "earning_hispanic": 998
+  },
+  {
+    "id": 3,
+    "categories": "Business and financial operations occupations",
+    "earning_male": 1542,
+    "earning_female": 1285,
+    "earning_nonhispanic": 1160,
+    "earning_afro": 1056,
+    "earning_asian": 1441,
+    "earning_hispanic": 950
+  },
+  {
+    "id": 4,
+    "categories": "Computer and mathematical occupations",
+    "earning_male": 1680,
+    "earning_female": 1579,
+    "earning_nonhispanic": 1314,
+    "earning_afro": 987,
+    "earning_asian": 1627,
+    "earning_hispanic": 1159
+  },
+  {
+    "id": 5,
+    "categories": "Architecture and engineering occupations",
+    "earning_male": 1616,
+    "earning_female": 1550,
+    "earning_nonhispanic": 1323,
+    "earning_afro": -1,
+    "earning_asian": 1466,
+    "earning_hispanic": 1138
+  },
+  {
+    "id": 6,
+    "categories": "Life, physical, and social science occupations",
+    "earning_male": 1460,
+    "earning_female": 1334,
+    "earning_nonhispanic": 1237,
+    "earning_afro": -1,
+    "earning_asian": 1365,
+    "earning_hispanic": 1083
+  },
+  {
+    "id": 7,
+    "categories": "Community and social service occupations",
+    "earning_male": 1148,
+    "earning_female": 968,
+    "earning_nonhispanic": 974,
+    "earning_afro": 902,
+    "earning_asian": 963,
+    "earning_hispanic": 901
+  },
+  {
+    "id": 8,
+    "categories": "Legal occupations",
+    "earning_male": 2100,
+    "earning_female": 1562,
+    "earning_nonhispanic": 1271,
+    "earning_afro": 1261,
+    "earning_asian": 1554,
+    "earning_hispanic": 1139
+  },
+  {
+    "id": 9,
+    "categories": "Education, training, and library occupations",
+    "earning_male": 1325,
+    "earning_female": 1057,
+    "earning_nonhispanic": 1005,
+    "earning_afro": 914,
+    "earning_asian": 1159,
+    "earning_hispanic": 867
+  },
+  {
+    "id": 10,
+    "categories": "Arts, design, entertainment, sports, and media occupations",
+    "earning_male": 1264,
+    "earning_female": 1151,
+    "earning_nonhispanic": 1107,
+    "earning_afro": -1,
+    "earning_asian": 1239,
+    "earning_hispanic": 840
+  },
+  {
+    "id": 11,
+    "categories": "Healthcare practitioners and technical occupations",
+    "earning_male": 1474,
+    "earning_female": 1180,
+    "earning_nonhispanic": 1153,
+    "earning_afro": 929,
+    "earning_asian": 1484,
+    "earning_hispanic": 1041
+  },
+  {
+    "id": 12,
+    "categories": "Healthcare support occupations",
+    "earning_male": 711,
+    "earning_female": 591,
+    "earning_nonhispanic": 598,
+    "earning_afro": 559,
+    "earning_asian": 605,
+    "earning_hispanic": 584
+  },
+  {
+    "id": 13,
+    "categories": "Protective service occupations",
+    "earning_male": 1067,
+    "earning_female": 900,
+    "earning_nonhispanic": 848,
+    "earning_afro": 616,
+    "earning_asian": -1,
+    "earning_hispanic": 848
+  },
+  {
+    "id": 14,
+    "categories": "Food preparation and serving related occupations",
+    "earning_male": 579,
+    "earning_female": 522,
+    "earning_nonhispanic": 496,
+    "earning_afro": 477,
+    "earning_asian": 538,
+    "earning_hispanic": 486
+  },
+  {
+    "id": 15,
+    "categories": "Building and grounds cleaning and maintenance occupations",
+    "earning_male": 692,
+    "earning_female": 580,
+    "earning_nonhispanic": 526,
+    "earning_afro": 493,
+    "earning_asian": 545,
+    "earning_hispanic": 493
+  },
+  {
+    "id": 16,
+    "categories": "Personal care and service occupations",
+    "earning_male": 627,
+    "earning_female": 565,
+    "earning_nonhispanic": 563,
+    "earning_afro": 495,
+    "earning_asian": 573,
+    "earning_hispanic": 508
+  },
+  {
+    "id": 17,
+    "categories": "Sales and related occupations",
+    "earning_male": 1104,
+    "earning_female": 830,
+    "earning_nonhispanic": 746,
+    "earning_afro": 582,
+    "earning_asian": 770,
+    "earning_hispanic": 582
+  },
+  {
+    "id": 18,
+    "categories": "Office and administrative support occupations",
+    "earning_male": 850,
+    "earning_female": 732,
+    "earning_nonhispanic": 735,
+    "earning_afro": 696,
+    "earning_asian": 782,
+    "earning_hispanic": 670
+  },
+  {
+    "id": 19,
+    "categories": "Farming, fishing, and forestry occupations",
+    "earning_male": 654,
+    "earning_female": 574,
+    "earning_nonhispanic": 529,
+    "earning_afro": -1,
+    "earning_asian": -1,
+    "earning_hispanic": 504
+  },
+  {
+    "id": 20,
+    "categories": "Construction and extraction occupations",
+    "earning_male": 986,
+    "earning_female": 866,
+    "earning_nonhispanic": 845,
+    "earning_afro": -1,
+    "earning_asian": -1,
+    "earning_hispanic": 618
+  },
+  {
+    "id": 21,
+    "categories": "Installation, maintenance, and repair occupations",
+    "earning_male": 998,
+    "earning_female": 939,
+    "earning_nonhispanic": 857,
+    "earning_afro": -1,
+    "earning_asian": -1,
+    "earning_hispanic": -1
+  },
+  {
+    "id": 22,
+    "categories": "Production occupations",
+    "earning_male": 891,
+    "earning_female": 745,
+    "earning_nonhispanic": 654,
+    "earning_afro": 575,
+    "earning_asian": 599,
+    "earning_hispanic": 546
+  },
+  {
+    "id": 23,
+    "categories": "Transportation and material moving occupations",
+    "earning_male": 818,
+    "earning_female": 711,
+    "earning_nonhispanic": 620,
+    "earning_afro": 617,
+    "earning_asian": 574,
+    "earning_hispanic": 509
+  }
+]
